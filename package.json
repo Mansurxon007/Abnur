@@ -15,8 +15,10 @@
   "author": "Abnur",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "mongoose": "^9.1.3"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

@@ -1,60 +1,84 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const fs = require('fs').promises;
+const mongoose = require('mongoose');
+require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const MONGODB_URI = process.env.MONGODB_URI;
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.static(__dirname));
 
-// Data file paths
-const DATA_DIR = path.join(__dirname, 'data');
-const USERS_FILE = path.join(DATA_DIR, 'users.json');
-const TEACHERS_FILE = path.join(DATA_DIR, 'teachers.json');
-const APPOINTMENTS_FILE = path.join(DATA_DIR, 'appointments.json');
-const LESSONS_FILE = path.join(DATA_DIR, 'lessons.json');
-
-// Initialize data directory and files
-async function initializeData() {
-    try {
-        await fs.mkdir(DATA_DIR, { recursive: true });
-
-        const files = [
-            { path: USERS_FILE, data: [] },
-            { path: TEACHERS_FILE, data: [] },
-            { path: APPOINTMENTS_FILE, data: [] },
-            { path: LESSONS_FILE, data: [] }
-        ];
-
-        for (const file of files) {
-            try {
-                await fs.access(file.path);
-            } catch {
-                await fs.writeFile(file.path, JSON.stringify(file.data, null, 2));
-            }
-        }
-    } catch (error) {
-        console.error('Error initializing data:', error);
-    }
+// MongoDB Connection
+if (!MONGODB_URI) {
+    console.error('❌ MONGODB_URI topilmadi! .env faylini tekshiring.');
+    process.exit(1);
 }
 
-// Helper functions
-async function readJSON(filePath) {
-    try {
-        const data = await fs.readFile(filePath, 'utf8');
-        return JSON.parse(data);
-    } catch (error) {
-        return [];
-    }
-}
+mongoose.connect(MONGODB_URI)
+    .then(() => console.log('✅ MongoDB-ga ulanish muvaffaqiyatli!'))
+    .catch(err => console.error('❌ MongoDB-ga ulanishda xatolik:', err));
 
-async function writeJSON(filePath, data) {
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2));
-}
+// ===================================
+// MongoDB Schemas
+// ===================================
+
+const userSchema = new mongoose.Schema({
+    id: { type: Number, default: Date.now },
+    name: { type: String, required: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    createdAt: { type: Number, default: Date.now },
+    homework: { type: String, default: null },
+    homeworkDate: { type: String, default: null },
+    lessons: { type: Array, default: [] },
+    teacherId: { type: Number, default: null }
+});
+
+const teacherSchema = new mongoose.Schema({
+    id: { type: Number, default: Date.now },
+    name: { type: String, required: true },
+    specialty: { type: String },
+    phone: { type: String },
+    email: { type: String },
+    experience: { type: Number },
+    status: { type: String, default: 'active' },
+    bio: { type: String },
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    schedule: { type: Array, default: [] },
+    createdAt: { type: Number, default: Date.now }
+});
+
+const appointmentSchema = new mongoose.Schema({
+    id: { type: Number, default: Date.now },
+    courseId: { type: Number },
+    teacherId: { type: Number },
+    date: { type: String },
+    time: { type: String },
+    studentName: { type: String },
+    studentEmail: { type: String },
+    studentPhone: { type: String },
+    note: { type: String },
+    status: { type: String, default: 'confirmed' },
+    createdAt: { type: Number, default: Date.now }
+});
+
+const lessonSchema = new mongoose.Schema({
+    id: { type: Number, default: Date.now },
+    title: { type: String, required: true },
+    videoUrl: { type: String, required: true },
+    createdAt: { type: Number, default: Date.now }
+});
+
+const User = mongoose.model('User', userSchema);
+const Teacher = mongoose.model('Teacher', teacherSchema);
+const Appointment = mongoose.model('Appointment', appointmentSchema);
+const Lesson = mongoose.model('Lesson', lessonSchema);
 
 // ===================================
 // API Routes - Users
@@ -63,33 +87,29 @@ async function writeJSON(filePath, data) {
 // Register user
 app.post('/api/users/register', async (req, res) => {
     try {
-        const { name, email, password } = req.body;
-        const users = await readJSON(USERS_FILE);
+        const { name, email, password, teacherId, lessons } = req.body;
 
-        // Check if user exists
-        if (users.find(u => u.email === email)) {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
             return res.status(400).json({ error: 'Bu email allaqachon ro\'yxatdan o\'tgan!' });
         }
 
-        const newUser = {
-            id: Date.now(),
+        const newUser = new User({
             name,
             email,
             password, // In production, hash this!
-            createdAt: Date.now(),
-            homework: null,
-            homeworkDate: null,
-            lessons: []
-        };
+            teacherId,
+            lessons
+        });
 
-        users.push(newUser);
-        await writeJSON(USERS_FILE, users);
+        await newUser.save();
 
         res.json({
             success: true,
             user: { id: newUser.id, name: newUser.name, email: newUser.email }
         });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Server xatosi' });
     }
 });
@@ -98,9 +118,7 @@ app.post('/api/users/register', async (req, res) => {
 app.post('/api/users/login', async (req, res) => {
     try {
         const { email, password } = req.body;
-        const users = await readJSON(USERS_FILE);
-
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = await User.findOne({ email, password });
 
         if (!user) {
             return res.status(401).json({ error: 'Email yoki parol noto\'g\'ri!' });
@@ -118,9 +136,19 @@ app.post('/api/users/login', async (req, res) => {
 // Get all users (for admin/teacher)
 app.get('/api/users', async (req, res) => {
     try {
-        const users = await readJSON(USERS_FILE);
-        const usersWithoutPasswords = users.map(({ password, ...u }) => u);
-        res.json(usersWithoutPasswords);
+        const users = await User.find({}, { password: 0 });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ error: 'Server xatosi' });
+    }
+});
+
+// Get single user by email
+app.get('/api/users/:email', async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.params.email }, { password: 0 });
+        if (!user) return res.status(404).json({ error: 'Topilmadi' });
+        res.json(user);
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
     }
@@ -129,19 +157,17 @@ app.get('/api/users', async (req, res) => {
 // Update user (homework, lessons, etc.)
 app.put('/api/users/:email', async (req, res) => {
     try {
-        const users = await readJSON(USERS_FILE);
-        const index = users.findIndex(u => u.email === req.params.email);
+        const user = await User.findOneAndUpdate(
+            { email: req.params.email },
+            { $set: req.body },
+            { new: true, projection: { password: 0 } }
+        );
 
-        if (index === -1) {
+        if (!user) {
             return res.status(404).json({ error: 'Foydalanuvchi topilmadi' });
         }
 
-        // Update preserving sensitive data if needed
-        users[index] = { ...users[index], ...req.body };
-        await writeJSON(USERS_FILE, users);
-
-        const { password, ...userWithoutPassword } = users[index];
-        res.json({ success: true, user: userWithoutPassword });
+        res.json({ success: true, user });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
     }
@@ -150,9 +176,7 @@ app.put('/api/users/:email', async (req, res) => {
 // Delete user
 app.delete('/api/users/:email', async (req, res) => {
     try {
-        let users = await readJSON(USERS_FILE);
-        users = users.filter(u => u.email !== req.params.email);
-        await writeJSON(USERS_FILE, users);
+        await User.findOneAndDelete({ email: req.params.email });
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -166,7 +190,7 @@ app.delete('/api/users/:email', async (req, res) => {
 // Get all teachers
 app.get('/api/teachers', async (req, res) => {
     try {
-        const teachers = await readJSON(TEACHERS_FILE);
+        const teachers = await Teacher.find({});
         res.json(teachers);
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -176,8 +200,7 @@ app.get('/api/teachers', async (req, res) => {
 // Get active teachers
 app.get('/api/teachers/active', async (req, res) => {
     try {
-        const teachers = await readJSON(TEACHERS_FILE);
-        const activeTeachers = teachers.filter(t => t.status === 'active');
+        const activeTeachers = await Teacher.find({ status: 'active' });
         res.json(activeTeachers);
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -187,18 +210,11 @@ app.get('/api/teachers/active', async (req, res) => {
 // Add teacher (admin only)
 app.post('/api/teachers', async (req, res) => {
     try {
-        const teachers = await readJSON(TEACHERS_FILE);
-        const newTeacher = {
-            id: Date.now(),
-            ...req.body,
-            createdAt: Date.now()
-        };
-
-        teachers.push(newTeacher);
-        await writeJSON(TEACHERS_FILE, teachers);
-
+        const newTeacher = new Teacher(req.body);
+        await newTeacher.save();
         res.json({ success: true, teacher: newTeacher });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Server xatosi' });
     }
 });
@@ -206,17 +222,17 @@ app.post('/api/teachers', async (req, res) => {
 // Update teacher
 app.put('/api/teachers/:id', async (req, res) => {
     try {
-        const teachers = await readJSON(TEACHERS_FILE);
-        const index = teachers.findIndex(t => t.id === parseInt(req.params.id));
+        const teacher = await Teacher.findOneAndUpdate(
+            { id: parseInt(req.params.id) },
+            { $set: req.body },
+            { new: true }
+        );
 
-        if (index === -1) {
+        if (!teacher) {
             return res.status(404).json({ error: 'O\'qituvchi topilmadi' });
         }
 
-        teachers[index] = { ...teachers[index], ...req.body };
-        await writeJSON(TEACHERS_FILE, teachers);
-
-        res.json({ success: true, teacher: teachers[index] });
+        res.json({ success: true, teacher });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
     }
@@ -225,10 +241,7 @@ app.put('/api/teachers/:id', async (req, res) => {
 // Delete teacher
 app.delete('/api/teachers/:id', async (req, res) => {
     try {
-        let teachers = await readJSON(TEACHERS_FILE);
-        teachers = teachers.filter(t => t.id !== parseInt(req.params.id));
-        await writeJSON(TEACHERS_FILE, teachers);
-
+        await Teacher.findOneAndDelete({ id: parseInt(req.params.id) });
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -242,7 +255,7 @@ app.delete('/api/teachers/:id', async (req, res) => {
 // Get all appointments
 app.get('/api/appointments', async (req, res) => {
     try {
-        const appointments = await readJSON(APPOINTMENTS_FILE);
+        const appointments = await Appointment.find({});
         res.json(appointments);
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -252,17 +265,8 @@ app.get('/api/appointments', async (req, res) => {
 // Create appointment
 app.post('/api/appointments', async (req, res) => {
     try {
-        const appointments = await readJSON(APPOINTMENTS_FILE);
-        const newAppointment = {
-            id: Date.now(),
-            ...req.body,
-            status: 'confirmed',
-            createdAt: Date.now()
-        };
-
-        appointments.push(newAppointment);
-        await writeJSON(APPOINTMENTS_FILE, appointments);
-
+        const newAppointment = new Appointment(req.body);
+        await newAppointment.save();
         res.json({ success: true, appointment: newAppointment });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -272,17 +276,17 @@ app.post('/api/appointments', async (req, res) => {
 // Update appointment
 app.put('/api/appointments/:id', async (req, res) => {
     try {
-        const appointments = await readJSON(APPOINTMENTS_FILE);
-        const index = appointments.findIndex(a => a.id === parseInt(req.params.id));
+        const appointment = await Appointment.findOneAndUpdate(
+            { id: parseInt(req.params.id) },
+            { $set: req.body },
+            { new: true }
+        );
 
-        if (index === -1) {
+        if (!appointment) {
             return res.status(404).json({ error: 'Uchrashuv topilmadi' });
         }
 
-        appointments[index] = { ...appointments[index], ...req.body };
-        await writeJSON(APPOINTMENTS_FILE, appointments);
-
-        res.json({ success: true, appointment: appointments[index] });
+        res.json({ success: true, appointment });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
     }
@@ -295,7 +299,7 @@ app.put('/api/appointments/:id', async (req, res) => {
 // Get all lessons
 app.get('/api/lessons', async (req, res) => {
     try {
-        const lessons = await readJSON(LESSONS_FILE);
+        const lessons = await Lesson.find({});
         res.json(lessons);
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -305,16 +309,8 @@ app.get('/api/lessons', async (req, res) => {
 // Add lesson
 app.post('/api/lessons', async (req, res) => {
     try {
-        const lessons = await readJSON(LESSONS_FILE);
-        const newLesson = {
-            id: Date.now(),
-            ...req.body,
-            createdAt: Date.now()
-        };
-
-        lessons.push(newLesson);
-        await writeJSON(LESSONS_FILE, lessons);
-
+        const newLesson = new Lesson(req.body);
+        await newLesson.save();
         res.json({ success: true, lesson: newLesson });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -324,17 +320,17 @@ app.post('/api/lessons', async (req, res) => {
 // Update lesson
 app.put('/api/lessons/:id', async (req, res) => {
     try {
-        const lessons = await readJSON(LESSONS_FILE);
-        const index = lessons.findIndex(l => l.id === parseInt(req.params.id));
+        const lesson = await Lesson.findOneAndUpdate(
+            { id: parseInt(req.params.id) },
+            { $set: req.body },
+            { new: true }
+        );
 
-        if (index === -1) {
+        if (!lesson) {
             return res.status(404).json({ error: 'Dars topilmadi' });
         }
 
-        lessons[index] = { ...lessons[index], ...req.body };
-        await writeJSON(LESSONS_FILE, lessons);
-
-        res.json({ success: true, lesson: lessons[index] });
+        res.json({ success: true, lesson });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
     }
@@ -343,10 +339,7 @@ app.put('/api/lessons/:id', async (req, res) => {
 // Delete lesson
 app.delete('/api/lessons/:id', async (req, res) => {
     try {
-        let lessons = await readJSON(LESSONS_FILE);
-        lessons = lessons.filter(l => l.id !== parseInt(req.params.id));
-        await writeJSON(LESSONS_FILE, lessons);
-
+        await Lesson.findOneAndDelete({ id: parseInt(req.params.id) });
         res.json({ success: true });
     } catch (error) {
         res.status(500).json({ error: 'Server xatosi' });
@@ -368,11 +361,12 @@ app.get('/teacher', (req, res) => {
     res.sendFile(path.join(__dirname, 'teacher.html'));
 });
 
-// ===================================
+// Fallback for SPA (optional)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Start Server
-// ===================================
-initializeData().then(() => {
-    app.listen(PORT, () => {
-        console.log(`🚀 Server ishga tushdi: http://localhost:${PORT}`);
-    });
+app.listen(PORT, () => {
+    console.log(`🚀 Server ishga tushdi: http://localhost:${PORT}`);
 });
