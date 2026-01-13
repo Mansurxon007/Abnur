@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="O'qituvchi Kabineti - Logoped Kurslari">
+    <title>O'qituvchi Kabineti - Logoped Kurslari</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+    <style>
+        /* Specific styles for teacher panel variations */
+        .teacher-body {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%) !important;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .time-slot {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 0.75rem 0.5rem;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .time-slot:hover {
+            border-color: #4facfe;
+            color: #4facfe;
+        }
+
+        .time-slot.selected {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+
+        .time-slot.booked {
+            background: #f3f4f6;
+            color: #9ca3af;
+            border-color: #e5e7eb;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .date-btn {
+            background: white;
+            border: 1px solid #e5e7eb;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .date-btn:hover {
+            border-color: #4facfe;
+            color: #4facfe;
+        }
+
+        .date-btn.active {
+            background: #4facfe;
+            color: white;
+            border-color: #4facfe;
+        }
+    </style>
+</head>
+
+<body class="teacher-body">
+    <!-- Teacher Login Screen -->
+    <div class="admin-login-container" id="teacherLoginContainer">
+        <div class="admin-login-card">
+            <div class="admin-login-header">
+                <div class="admin-logo">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="28" fill="url(#teacherGradient)" />
+                        <path d="M20 30L25 35L40 20" stroke="white" stroke-width="4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="teacherGradient" x1="0" y1="0" x2="60" y2="60">
+                                <stop offset="0%" stop-color="#4facfe" />
+                                <stop offset="100%" stop-color="#00f2fe" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1 class="admin-login-title"
+                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                    O'qituvchi Kabineti</h1>
+                <p class="admin-login-subtitle">Dars jadvali va uchrashuvlarni boshqarish</p>
+            </div>
+            <form class="admin-login-form" id="teacherLoginForm">
+                <div class="form-group">
+                    <label for="teacherUser" class="form-label">Login</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="text" id="teacherUser" class="form-input" placeholder="Login" required
+                            autocomplete="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="teacherPass" class="form-label">Parol</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="password" id="teacherPass" class="form-input" placeholder="••••••••" required
+                            autocomplete="current-password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full admin-login-btn"
+                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                    <span>Kirish</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+                <a href="index.html" class="admin-back-link">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    bosh sahifaga qaytish
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Teacher Dashboard -->
+    <div class="admin-dashboard" id="teacherDashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-logo">
+                    <svg width="32" height="32" viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="28" fill="url(#teacherGradientSidebar)" />
+                        <path d="M20 30L25 35L40 20" stroke="white" stroke-width="4" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                        <defs>
+                            <linearGradient id="teacherGradientSidebar" x1="0" y1="0" x2="60" y2="60">
+                                <stop offset="0%" stop-color="#4facfe" />
+                                <stop offset="100%" stop-color="#00f2fe" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="admin-sidebar-title">Kabinet</span>
+                </div>
+            </div>
+            <div class="admin-sidebar-nav" style="padding: 1.5rem 1rem;">
+                <div style="margin-bottom: 2rem; text-align: center;">
+                    <div
+                        style="width: 60px; height: 60px; border-radius: 50%; background: #374151; margin: 0 auto 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                        👩‍🏫</div>
+                    <div id="sidebarTeacherName" style="color: white; font-weight: 600; margin-bottom: 0.25rem;">
+                        O'qituvchi</div>
+                    <div id="sidebarTeacherSpecialty" style="color: #9ca3af; font-size: 0.8rem;">Mutaxassis</div>
+                </div>
+
+                <a href="#" class="admin-nav-item active" data-section="schedule">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M3 9H17" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M7 2V4M13 2V4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Jadval va Band qilish</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="appointments">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M10 2L12 7H17L13 10L14 15L10 12L6 15L7 10L3 7H8L10 2Z" stroke="currentColor"
+                            stroke-width="1.5" />
+                    </svg>
+                    <span>Uchrashuvlar</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="lesson-schedule">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M4 6h16M4 10h16M4 14h16" stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" />
+                        <rect x="2" y="4" width="2" height="12" rx="1" fill="currentColor" />
+                    </svg>
+                    <span>Dars Jadvali</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="students">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path
+                            d="M10 11C12.2091 11 14 9.20914 14 7C14 4.79086 12.2091 3 10 3C7.79086 3 6 4.79086 6 7C6 9.20914 7.79086 11 10 11Z"
+                            stroke="currentColor" stroke-width="1.5" />
+                        <path d="M17 17C17 14.2386 13.866 12 10 12C6.13401 12 3 14.2386 3 17" stroke="currentColor"
+                            stroke-width="1.5" />
+                    </svg>
+                    <span>O'quvchilarim</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="tasks">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M9 5H16M9 10H16M9 15H16M4 5H5M4 10H5M4 15H5" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" />
+                    </svg>
+                    <span>Vazifalar</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="passed-lessons">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M12 8V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="2" />
+                    </svg>
+                    <span>O'tilgan darslar</span>
+                </a>
+            </div>
+            <div class="admin-sidebar-footer">
+                <button class="admin-logout-btn" id="teacherLogoutBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 17H4C3.44772 17 3 16.5523 3 16V4C3 3.44772 3.44772 3 4 3H7" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M13 13L17 10L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M17 10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Chiqish</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <button class="mobile-toggle" id="mobileToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18" />
+                    </svg>
+                </button>
+                <div class="admin-header-content">
+                    <div>
+                        <h1 class="admin-header-title" id="sectionTitle">Mening Jadvalim</h1>
+                        <p class="admin-header-subtitle" id="sectionSubtitle">Bo'sh vaqtlaringizni belgilang</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Schedule Section -->
+            <section class="admin-section" id="scheduleSection">
+                <div class="admin-info-card">
+                    <div class="calendar-header">
+                        <h3>Bo'sh vaqtlaringizni belgilang</h3>
+                        <div class="date-selector">
+                            <button class="date-btn active">Bugun</button>
+                            <button class="date-btn">Ertaga</button>
+                        </div>
+                    </div>
+                    <p style="margin-bottom: 1.5rem; color: #6b7280;">O'quvchilar band qilishi mumkin bo'lgan vaqtlarni
+                        tanlang. Tanlangan vaqtlar ko'k rangda bo'ladi.</p>
+
+                    <div class="schedule-grid" id="timeSlotsGrid">
+                        <!-- Time slots generated by JS -->
+                    </div>
+
+                    <div style="margin-top: 2rem; text-align: right;">
+                        <button class="btn btn-primary" id="saveScheduleBtn"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">O'zgarishlarni
+                            saqlash</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Appointments Section -->
+            <section class="admin-section" id="appointmentsSection" style="display: none;">
+                <div class="admin-table-card">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Rejalashtirilgan Uchrashuvlar</h3>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>O'quvchi</th>
+                                    <th>Sana</th>
+                                    <th>Vaqt</th>
+                                    <th>Aloqa</th>
+                                    <th>Holat</th>
+                                </tr>
+                            </thead>
+                            <tbody id="appointmentsTableBody">
+                                <!-- Appointments generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Lesson Schedule Section -->
+            <section class="admin-section" id="lessonScheduleSection" style="display: none;">
+                <div class="admin-table-card">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Umumiy Dars Jadvali</h3>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>O'quvchi</th>
+                                    <th>Kun</th>
+                                    <th>Vaqt</th>
+                                </tr>
+                            </thead>
+                            <tbody id="lessonScheduleTableBody">
+                                <!-- Lesson schedule generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Students Section -->
+            <section class="admin-section" id="studentsSection" style="display: none;">
+                <div class="admin-info-card">
+                    <div class="calendar-header">
+                        <h3>Mening O'quvchilarim</h3>
+                        <button class="btn btn-primary" id="openAddStudentModal"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">O'quvchi
+                            Qo'shish</button>
+                    </div>
+
+                    <div class="admin-table-wrapper" style="margin-top: 1rem;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>O'quvchi Ismi</th>
+                                    <th class="hide-mobile">Email (Login)</th>
+                                    <th>Dars Kuni</th>
+                                    <th class="hide-mobile">Vazifalar</th>
+                                    <th>Darsni Yakunlash</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="studentsTableBody">
+                                <!-- Students generated by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Tasks Section -->
+            <section class="admin-section" id="tasksSection" style="display: none;">
+                <div class="admin-table-card" style="padding: 1.5rem;">
+                    <div style="margin-bottom: 2rem;">
+                        <label class="form-label">O'quvchini tanlang</label>
+                        <select id="taskStudentSelect" class="form-input" style="max-width: 300px;">
+                            <option value="">O'quvchini tanlang</option>
+                        </select>
+                    </div>
+
+                    <div id="studentTaskDisplay">
+                        <div
+                            style="text-align: center; color: #6b7280; padding: 3rem; background: #f9fafb; border-radius: 12px; border: 2px dashed #e5e7eb;">
+                            O'quvchini tanlang va uning vazifalarini ko'ring
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Passed Lessons Section -->
+            <section class="admin-section" id="passedLessonsSection" style="display: none;">
+                <div class="admin-stats-grid" style="margin-bottom: 2rem;">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon" style="background: #10b981;">
+                            <span style="color: white; font-weight: 800;">Kun</span>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Bugun</div>
+                            <div class="admin-stat-value" id="statsToday">0s</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon" style="background: #3b82f6;">
+                            <span style="color: white; font-weight: 800;">Hafta</span>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Haftalik</div>
+                            <div class="admin-stat-value" id="statsWeek">0s</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon" style="background: #f59e0b;">
+                            <span style="color: white; font-weight: 800;">Oy</span>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Oylik</div>
+                            <div class="admin-stat-value" id="statsMonth">0s</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon" style="background: #ef4444;">
+                            <span style="color: white; font-weight: 800;">Yil</span>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Yillik</div>
+                            <div class="admin-stat-value" id="statsYear">0s</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-table-card">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Oxirgi o'tilgan darslar</h3>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>O'quvchi</th>
+                                    <th>Sana</th>
+                                    <th>Davomiyligi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="passedLessonsTableBody">
+                                <!-- Passed lessons log -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add Student Modal -->
+    <div class="modal" id="addStudentModal"
+        style="display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; background: rgba(0,0,0,0.5);">
+        <div class="modal-content"
+            style="background: white; padding: 1.5rem; border-radius: 12px; width: 100%; max-width: 400px; position: relative;">
+            <button class="modal-close" id="closeStudentModal"
+                style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; color: #6b7280;">&times;</button>
+            <h3 style="margin-bottom: 1rem; color: #111827; font-size: 1.25rem;">Yangi O'quvchi Qo'shish</h3>
+            <form id="addStudentForm">
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.25rem;">O'quvchi Ismi</label>
+                    <input type="text" id="newStudentName" class="form-input" placeholder="Ism Familiya" required
+                        style="padding: 0.5rem 0.75rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.25rem;">Email (Login)</label>
+                    <input type="email" id="newStudentEmail" class="form-input" placeholder="email@example.com" required
+                        style="padding: 0.5rem 0.75rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.25rem;">Parol</label>
+                    <input type="password" id="newStudentPass" class="form-input" placeholder="••••••••" required
+                        style="padding: 0.5rem 0.75rem;">
+                </div>
+                <div class="form-group"
+                    style="margin-bottom: 1rem; padding: 0.75rem; background: #f8fafc; border-radius: 8px;">
+                    <label class="form-label" style="color: #1e293b; font-weight: 600; font-size: 0.85rem;">Dars Kunlari
+                        (Haftalik)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.5rem; margin-top: 0.5rem;"
+                        id="newStudentDays">
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Dushanba"> Dushanba
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Seshanba"> Seshanba
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Chorshanba"> Chorshanba
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Payshanba"> Payshanba
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Juma"> Juma
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Shanba"> Shanba
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; cursor: pointer; color: #1e293b;">
+                            <input type="checkbox" value="Yakshanba"> Yakshanba
+                        </label>
+                    </div>
+                    <div style="margin-top: 0.75rem;">
+                        <label class="form-label" style="font-size: 0.75rem;">Dars vaqti (Barcha kunlar uchun)</label>
+                        <input type="time" id="newStudentLessonTime" class="form-input" required
+                            style="padding: 0.4rem 0.6rem;">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"
+                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">Qo'shish</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Manage Homework/Lesson Modal -->
+    <div class="modal" id="manageStudentModal"
+        style="display: none; position: fixed; inset: 0; z-index: 1000; align-items: center; justify-content: center; background: rgba(0,0,0,0.5);">
+        <div class="modal-content"
+            style="background: white; padding: 1.5rem; border-radius: 12px; width: 100%; max-width: 400px; position: relative;">
+            <button class="modal-close" id="closeManageModal"
+                style="position: absolute; right: 1rem; top: 1rem; background: none; border: none; cursor: pointer; font-size: 1.5rem; color: #6b7280;">&times;</button>
+            <h3 id="manageModalTitle" style="margin-bottom: 1rem; color: #111827; font-size: 1.2rem;">O'quvchi: Ism</h3>
+            <form id="manageStudentForm">
+                <input type="hidden" id="manageStudentId">
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem; margin-bottom: 0.25rem;">Dars Kunlari
+                        (Haftalik)</label>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.4rem; margin-top: 0.25rem;"
+                        id="manageStudentDays">
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Dushanba"> Dush
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Seshanba"> Sesh
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Chorshanba"> Chor
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Payshanba"> Pay
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Juma"> Jum
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Shanba"> Shan
+                        </label>
+                        <label
+                            style="display: flex; align-items: center; gap: 0.3rem; font-size: 0.8rem; cursor: pointer;">
+                            <input type="checkbox" value="Yakshanba"> Yak
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem;">Dars Vaqti</label>
+                    <input type="time" id="lessonTime" class="form-input" required style="padding: 0.4rem 0.6rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem;">Dars o'tilgan sana</label>
+                    <input type="date" id="homeworkDate" class="form-input" style="padding: 0.4rem 0.6rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem;">Dars boshlanish vaqti</label>
+                    <input type="time" id="lessonStartTime" class="form-input" style="padding: 0.4rem 0.6rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 0.75rem;">
+                    <label class="form-label" style="font-size: 0.85rem;">Dars tugash vaqti</label>
+                    <input type="time" id="lessonEndTime" class="form-input" style="padding: 0.4rem 0.6rem;">
+                </div>
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label class="form-label" style="font-size: 0.85rem;">Uyga vazifa</label>
+                    <textarea id="homeworkContent" class="form-input"
+                        style="height: 80px; resize: none; padding: 0.5rem; font-size: 0.9rem;"
+                        placeholder="Vazifalarni bu yerga yozing..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full"
+                    style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); padding: 0.6rem;">Saqlash</button>
+            </form>
+        </div>
+    </div>
+    </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="teacherToast">
+        <div class="toast-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="#4facfe" />
+                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Muvaffaqiyatli!</div>
+            <div class="toast-message" id="teacherToastMessage"></div>
+        </div>
+    </div>
+
+    <script src="teacher-script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Professional logoped kurslari - Nutq terapiyasi va rivojlantirish kurslari">
+    <title>Logoped Kurslari - Professional Nutq Terapiyasi</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="container">
+            <div class="nav-content">
+                <div class="logo">
+                    <img src="abnur_logo.jpg" alt="Abnur Logo"
+                        style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;">
+                    <span class="logo-text">Abnur</span>
+                </div>
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">Bosh sahifa</a>
+                    <a href="#courses" class="nav-link">Kurslar</a>
+                    <a href="#free-lessons" class="nav-link">Bepul darsliklar</a>
+                    <a href="#about" class="nav-link">Biz haqimizda</a>
+                    <a href="#contact" class="nav-link">Bog'lanish</a>
+                </div>
+                <div class="nav-buttons">
+                    <button class="btn btn-ghost" id="loginBtn">Kirish</button>
+                    <button class="btn btn-primary" id="registerBtn">Ro'yxatdan o'tish</button>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-background">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <div class="hero-badge">
+                        <span class="badge-icon">🎓</span>
+                        <span>Professional Nutq Terapiyasi</span>
+                    </div>
+                    <h1 class="hero-title">
+                        Bolangizning nutqi uchun
+                        <span class="gradient-text">Eng yaxshi kurslar</span>
+                    </h1>
+                    <p class="hero-description">
+                        Tajribali logopedlar bilan professional kurslar. Har bir bola o'z imkoniyatlariga erishishi
+                        uchun individual yondashuv va zamonaviy metodlar.
+                    </p>
+                    <div class="hero-buttons">
+                        <button class="btn btn-large btn-primary" id="heroStartBtn">
+                            <span>Boshlash</span>
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                        </button>
+                        <button class="btn btn-large btn-ghost">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" />
+                                <path d="M8 7L13 10L8 13V7Z" fill="currentColor" />
+                            </svg>
+                            <span>Video ko'rish</span>
+                        </button>
+                    </div>
+                    <div class="hero-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Muvaffaqiyatli o'quvchilar</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-number">15+</div>
+                            <div class="stat-label">Tajribali mutaxassislar</div>
+                        </div>
+                        <div class="stat-divider"></div>
+                        <div class="stat-item">
+                            <div class="stat-number">98%</div>
+                            <div class="stat-label">Ijobiy natijalar</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-image">
+                    <div class="hero-card card-floating">
+                        <div class="card-glow"></div>
+                        <img src="hero-image.png" alt="Logoped kurslari" id="heroImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    Bizning <span class="gradient-text">Kurslarimiz</span>
+                </h2>
+                <p class="section-description">
+                    Har bir yosh guruhi va muammoga mo'ljallangan maxsus dasturlar
+                </p>
+            </div>
+            <div class="courses-grid" id="coursesGrid">
+                <!-- Courses will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Free Lessons Section -->
+    <section class="free-lessons" id="free-lessons" style="padding: 8rem 0; position: relative;">
+        <div class="container">
+            <div class="section-header">
+                <div class="hero-badge" style="margin: 0 auto 1.5rem;">
+                    <span class="badge-icon">🎥</span>
+                    <span>Bepul Video Mashqlar</span>
+                </div>
+                <h2 class="section-title">
+                    Bepul <span class="gradient-text">Darsliklar</span>
+                </h2>
+                <p class="section-description">
+                    Nutq rivojlanishi va til ko'nikmalari uchun foydali video darslar.
+                    Mutaxassislarimizdan bepul tavsiyalar.
+                </p>
+            </div>
+            <div class="lessons-grid" id="freeLessonsGrid">
+                <!-- Free lessons will be dynamically inserted here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="container">
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#grad1)" />
+                            <path d="M12 20L18 26L28 14" stroke="white" stroke-width="3" stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="grad1" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#667eea" />
+                                    <stop offset="100%" stop-color="#764ba2" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Individual yondashuv</h3>
+                    <p class="feature-description">Har bir bolaga alohida e'tibor va shaxsiy dastur</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#grad2)" />
+                            <circle cx="20" cy="15" r="5" stroke="white" stroke-width="2" />
+                            <path d="M12 30C12 25 15 22 20 22C25 22 28 25 28 30" stroke="white" stroke-width="2"
+                                stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="grad2" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#f093fb" />
+                                    <stop offset="100%" stop-color="#f5576c" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Tajribali mutaxassislar</h3>
+                    <p class="feature-description">Katta tajribaga ega sertifikatlangan logopedlar</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#grad3)" />
+                            <path d="M20 10L25 18H15L20 10Z" fill="white" />
+                            <rect x="15" y="18" width="10" height="12" fill="white" />
+                            <defs>
+                                <linearGradient id="grad3" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#4facfe" />
+                                    <stop offset="100%" stop-color="#00f2fe" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Zamonaviy metodlar</h3>
+                    <p class="feature-description">Eng so'nggi terapiya usullari va texnologiyalar</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                            <rect width="40" height="40" rx="10" fill="url(#grad4)" />
+                            <circle cx="20" cy="20" r="8" stroke="white" stroke-width="2" />
+                            <path d="M20 12V20L25 23" stroke="white" stroke-width="2" stroke-linecap="round" />
+                            <defs>
+                                <linearGradient id="grad4" x1="0" y1="0" x2="40" y2="40">
+                                    <stop offset="0%" stop-color="#fa709a" />
+                                    <stop offset="100%" stop-color="#fee140" />
+                                </linearGradient>
+                            </defs>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Moslashuvchan jadval</h3>
+                    <p class="feature-description">Sizga qulay vaqtda darslar tashkil etish</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">
+                    Biz bilan <span class="gradient-text">Bog'lanish</span>
+                </h2>
+                <p class="section-description">
+                    Savollaringiz bormi? Biz bilan bog'laning va bepul konsultatsiya oling
+                </p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <rect width="40" height="40" rx="10" fill="url(#phoneGrad)" />
+                                <path
+                                    d="M14 12C14 12 16 10 18 12L20 14C22 16 22 16 20 18L19 19C19 19 20 22 23 25C26 28 29 29 29 29L30 28C32 26 32 26 34 28L36 30C38 32 36 34 36 34C36 34 32 38 28 38C20 38 10 28 10 20C10 16 14 12 14 12Z"
+                                    fill="white" />
+                                <defs>
+                                    <linearGradient id="phoneGrad" x1="0" y1="0" x2="40" y2="40">
+                                        <stop offset="0%" stop-color="#667eea" />
+                                        <stop offset="100%" stop-color="#764ba2" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h3 class="contact-title">Telefon raqamlar</h3>
+                        <div class="contact-details">
+                            <a href="tel:+998905872786" class="contact-link">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path
+                                        d="M7 4C7 4 8 3 9 4L10 5C11 6 11 6 10 7L9.5 7.5C9.5 7.5 10 9 11.5 10.5C13 12 14.5 12.5 14.5 12.5L15 12C16 11 16 11 17 12L18 13C19 14 18 15 18 15C18 15 16 17 14 17C10 17 5 12 5 8C5 6 7 4 7 4Z"
+                                        stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                                +998 90 587 27 86
+                            </a>
+                            <a href="tel:+998900574233" class="contact-link">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path
+                                        d="M7 4C7 4 8 3 9 4L10 5C11 6 11 6 10 7L9.5 7.5C9.5 7.5 10 9 11.5 10.5C13 12 14.5 12.5 14.5 12.5L15 12C16 11 16 11 17 12L18 13C19 14 18 15 18 15C18 15 16 17 14 17C10 17 5 12 5 8C5 6 7 4 7 4Z"
+                                        stroke="currentColor" stroke-width="1.5" />
+                                </svg>
+                                +998 90 057 42 33
+                            </a>
+                        </div>
+                    </div>
+                    <div class="contact-card">
+                        <div class="contact-icon">
+                            <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                <rect width="40" height="40" rx="10" fill="url(#locationGrad)" />
+                                <path
+                                    d="M20 10C15.58 10 12 13.58 12 18C12 24 20 32 20 32C20 32 28 24 28 18C28 13.58 24.42 10 20 10ZM20 21C18.34 21 17 19.66 17 18C17 16.34 18.34 15 20 15C21.66 15 23 16.34 23 18C23 19.66 21.66 21 20 21Z"
+                                    fill="white" />
+                                <defs>
+                                    <linearGradient id="locationGrad" x1="0" y1="0" x2="40" y2="40">
+                                        <stop offset="0%" stop-color="#f093fb" />
+                                        <stop offset="100%" stop-color="#f5576c" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <h3 class="contact-title">Manzil</h3>
+                        <p class="contact-text">Qo'qon, Farg'ona Viloyati, O'zbekiston</p>
+                        <a href="https://www.google.com/maps/place/40%C2%B032'27.7%22N+70%C2%B058'24.3%22E/@40.5410321,70.9722917,19z"
+                            target="_blank" class="contact-link" style="margin-top: 0.5rem;">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path
+                                    d="M10 2C6.69 2 4 4.69 4 8C4 12 10 18 10 18C10 18 16 12 16 8C16 4.69 13.31 2 10 2ZM10 10.5C8.62 10.5 7.5 9.38 7.5 8C7.5 6.62 8.62 5.5 10 5.5C11.38 5.5 12.5 6.62 12.5 8C12.5 9.38 11.38 10.5 10 10.5Z"
+                                    fill="currentColor" />
+                            </svg>
+                            Xaritada ko'rish
+                        </a>
+                    </div>
+                    <div style="display: flex; gap: var(--spacing-lg);">
+                        <div class="contact-card" style="flex: 1;">
+                            <div class="contact-icon">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <rect width="40" height="40" rx="10" fill="url(#socialGrad)" />
+                                    <path
+                                        d="M20 12C15.58 12 12 15.58 12 20C12 24.42 15.58 28 20 28C24.42 28 28 24.42 28 20C28 15.58 24.42 12 20 12ZM20 14V26M14 20H26"
+                                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    <defs>
+                                        <linearGradient id="socialGrad" x1="0" y1="0" x2="40" y2="40">
+                                            <stop offset="0%" stop-color="#667eea" />
+                                            <stop offset="100%" stop-color="#764ba2" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="contact-title">Ijtimoiy tarmoqlar</h3>
+                            <div class="contact-details">
+                                <a href="https://t.me/abnur_kokand" target="_blank" class="contact-link">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 2L11 13"></path>
+                                        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                                    </svg>
+                                    Telegram
+                                </a>
+                                <a href="https://www.instagram.com/reel/DQN2wlWiF4O/?igsh=MWtjMHc5eWRrNWRxbg=="
+                                    target="_blank" class="contact-link">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                                    </svg>
+                                    Instagram
+                                </a>
+                            </div>
+                        </div>
+                        <div class="contact-card" style="flex: 1;">
+                            <div class="contact-icon">
+                                <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                                    <rect width="40" height="40" rx="10" fill="url(#timeGrad)" />
+                                    <circle cx="20" cy="20" r="10" stroke="white" stroke-width="2" />
+                                    <path d="M20 13V20L25 23" stroke="white" stroke-width="2" stroke-linecap="round" />
+                                    <defs>
+                                        <linearGradient id="timeGrad" x1="0" y1="0" x2="40" y2="40">
+                                            <stop offset="0%" stop-color="#4facfe" />
+                                            <stop offset="100%" stop-color="#00f2fe" />
+                                        </linearGradient>
+                                    </defs>
+                                </svg>
+                            </div>
+                            <h3 class="contact-title">Ish vaqti</h3>
+                            <p class="contact-text">Dushanba - Shanba: 08:00 - 17:00</p>
+                            <p class="contact-text">Yakshanba: Dam olish</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper">
+                    <div class="contact-form-card">
+                        <h3 class="form-card-title">Bepul konsultatsiya</h3>
+                        <p class="form-card-subtitle">Ma'lumotlaringizni qoldiring, biz siz bilan bog'lanamiz</p>
+                        <form class="contact-form" id="contactForm">
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">Ismingiz</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                                        <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17"
+                                            stroke="currentColor" stroke-width="1.5" />
+                                    </svg>
+                                    <input type="text" id="contactName" class="form-input" placeholder="Ismingiz"
+                                        required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactPhone" class="form-label">Telefon raqam</label>
+                                <div class="input-wrapper">
+                                    <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                        <path
+                                            d="M7 4C7 4 8 3 9 4L10 5C11 6 11 6 10 7L9.5 7.5C9.5 7.5 10 9 11.5 10.5C13 12 14.5 12.5 14.5 12.5L15 12C16 11 16 11 17 12L18 13C19 14 18 15 18 15C18 15 16 17 14 17C10 17 5 12 5 8C5 6 7 4 7 4Z"
+                                            stroke="currentColor" stroke-width="1.5" />
+                                    </svg>
+                                    <input type="tel" id="contactPhone" class="form-input"
+                                        placeholder="+998 __ ___ __ __" required>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactMessage" class="form-label">Xabar (ixtiyoriy)</label>
+                                <textarea id="contactMessage" class="form-textarea" placeholder="Sizning xabaringiz..."
+                                    rows="4"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">Yuborish</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-overlay" id="loginOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="loginClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title">Kirish</h2>
+                <p class="modal-subtitle">Hisobingizga kiring va o'qishni davom ettiring</p>
+            </div>
+            <form class="auth-form" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail" class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 5L10 11L17 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5" />
+                        </svg>
+                        <input type="email" id="loginEmail" class="form-input" placeholder="email@example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword" class="form-label">Parol</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0.5rem;">
+                    <div class="captcha-box"
+                        style="background: #f9fafb; border: 1px solid #d1d5db; border-radius: 4px; padding: 0.25rem 0.75rem; display: flex; align-items: center; justify-content: space-between; max-width: 240px; margin: 0 auto; user-select: none;">
+                        <div style="display: flex; align-items: center; gap: 0.5rem;">
+                            <input type="checkbox" id="loginCaptcha"
+                                style="width: 20px; height: 20px; cursor: pointer; border-radius: 2px;">
+                            <label for="loginCaptcha"
+                                style="font-size: 0.8rem; color: #374151; cursor: pointer; font-weight: 500;">Men robot
+                                emasman</label>
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <img src="https://www.gstatic.com/recaptcha/api2/logo_48.png" alt="reCAPTCHA"
+                                style="width: 20px; height: 20px; opacity: 0.7;">
+                            <span style="font-size: 8px; color: #9ca3af; margin-top: 1px;">reCAPTCHA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-footer" style="margin-top: -0.25rem; justify-content: flex-end;">
+                    <a href="#" class="link" style="font-size: 0.85rem;">Parolni unutdingizmi?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-full">Kirish</button>
+
+                <div class="social-buttons">
+                    <button type="button" class="btn btn-social btn-full" style="justify-content: center;">
+                        <svg width="20" height="20" viewBox="0 0 20 20">
+                            <path fill="currentColor"
+                                d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z" />
+                            <path fill="currentColor"
+                                d="M13.46 15.13c-.83.59-1.96 1-3.46 1-2.64 0-4.88-1.74-5.68-4.15H1.07v2.52C2.72 17.75 6.09 20 10 20c2.7 0 4.96-.89 6.62-2.42l-3.16-2.45z" />
+                        </svg>
+                        Google orqali
+                    </button>
+                </div>
+
+                <p class="form-switch" style="margin-top: 0.5rem;">
+                    Hisobingiz yo'qmi? <a href="#" class="link" id="switchToRegister">Ro'yxatdan o'tish</a>
+                </p>
+
+                <!-- Staff Login Options -->
+                <div class="staff-login-options"
+                    style="margin-top: 1.5rem; padding-top: 1.5rem; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center;">
+                    <p style="font-size: 0.9rem; color: #9ca3af; margin-bottom: 0.75rem;">Xodimlar uchun:</p>
+                    <div style="display: flex; gap: 0.75rem; justify-content: center;">
+                        <a href="teacher.html" class="btn btn-ghost"
+                            style="flex: 1; font-size: 0.85rem; padding: 0.5rem; color: white; border-color: rgba(255, 255, 255, 0.2);">
+                            <span style="font-size: 1.1rem;">👩‍🏫</span> O'qituvchi
+                        </a>
+                        <a href="admin.html" class="btn btn-ghost"
+                            style="flex: 1; font-size: 0.85rem; padding: 0.5rem; color: white; border-color: rgba(255, 255, 255, 0.2);">
+                            <span style="font-size: 1.1rem;">🛡️</span> Admin
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-overlay" id="registerOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="registerClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title">Ro'yxatdan o'tish</h2>
+                <p class="modal-subtitle">Yangi hisob yarating va o'qishni boshlang</p>
+            </div>
+            <form class="auth-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName" class="form-label">To'liq ism</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="text" id="registerName" class="form-input" placeholder="Ismingiz" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail" class="form-label">Email</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <path d="M3 5L10 11L17 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                            <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5" />
+                        </svg>
+                        <input type="email" id="registerEmail" class="form-input" placeholder="email@example.com"
+                            required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword" class="form-label">Parol</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="password" id="registerPassword" class="form-input" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="registerConfirmPassword" class="form-label">Parolni tasdiqlang</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="password" id="registerConfirmPassword" class="form-input" placeholder="••••••••"
+                            required>
+                    </div>
+                </div>
+                <label class="checkbox-label">
+                    <input type="checkbox" class="form-checkbox" required>
+                    <span>Shaxsiy ma'lumotlar siyosatiga roziman</span>
+                </label>
+                <button type="submit" class="btn btn-primary btn-full">Ro'yxatdan o'tish</button>
+                <div class="form-divider">
+                    <span>yoki</span>
+                </div>
+                <div class="social-buttons">
+                    <button type="button" class="btn btn-social">
+                        <svg width="20" height="20" viewBox="0 0 20 20">
+                            <path fill="currentColor"
+                                d="M19.6 10.23c0-.82-.1-1.42-.25-2.05H10v3.72h5.5c-.15.96-.74 2.31-2.04 3.22v2.45h3.16c1.89-1.73 2.98-4.3 2.98-7.34z" />
+                            <path fill="currentColor"
+                                d="M13.46 15.13c-.83.59-1.96 1-3.46 1-2.64 0-4.88-1.74-5.68-4.15H1.07v2.52C2.72 17.75 6.09 20 10 20c2.7 0 4.96-.89 6.62-2.42l-3.16-2.45z" />
+                        </svg>
+                        Google
+                    </button>
+                </div>
+                <p class="form-switch">
+                    Hisobingiz bormi? <a href="#" class="link" id="switchToLogin">Kirish</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Video Modal -->
+    <div class="modal" id="videoModal">
+        <div class="modal-overlay" id="videoOverlay"></div>
+        <div class="modal-content video-modal-content">
+            <button class="modal-close" id="videoClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="video-container">
+                <video id="introVideo" controls>
+                    <source src="video_2025-12-24_22-30-26.mp4" type="video/mp4">
+                    Brauzeringiz video ni qo'llab-quvvatlamaydi.
+                </video>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrollment Modal -->
+    <div class="modal" id="enrollModal">
+        <div class="modal-overlay" id="enrollOverlay"></div>
+        <div class="modal-content enroll-modal-content">
+            <button class="modal-close" id="enrollClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+
+            <div class="modal-header">
+                <h2 class="modal-title" id="enrollCourseTitle">Kursga yozilish</h2>
+                <p class="modal-subtitle">O'zingizga qulay vaqtn va o'qituvchini tanlang</p>
+
+                <!-- Steps Indicator -->
+                <div class="enroll-steps">
+                    <div class="step active" data-step="1">1</div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="2">2</div>
+                    <div class="step-line"></div>
+                    <div class="step" data-step="3">3</div>
+                </div>
+                <div class="step-labels">
+                    <span>O'qituvchi</span>
+                    <span>Vaqt</span>
+                    <span>Tasdiqlash</span>
+                </div>
+            </div>
+
+            <div class="enroll-body">
+                <!-- Step 1: Select Teacher -->
+                <div class="enroll-step active" id="step1">
+                    <h3 class="step-title">O'qituvchini tanlang</h3>
+                    <div class="teachers-grid" id="enrollTeachersGrid">
+                        <!-- Teachers will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Step 2: Select Time -->
+                <div class="enroll-step" id="step2">
+                    <div class="step-header">
+                        <button class="btn-back" id="backToStep1">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <h3 class="step-title">Vaqtni tanlang</h3>
+                    </div>
+
+                    <div class="selected-teacher-preview" id="selectedTeacherPreview">
+                        <!-- Selected teacher info -->
+                    </div>
+
+                    <div class="calendar-wrapper">
+                        <div class="date-selector-row" id="enrollDatesList"
+                            style="overflow-x: auto; padding-bottom: 0.5rem;">
+                            <!-- Dates will be populated by JS -->
+                        </div>
+                        <div class="time-slots-container" id="enrollTimeSlots">
+                            <!-- Time slots loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="step-footer" style="margin-top: 1.5rem;">
+                        <button class="btn btn-primary btn-full" id="step2NextBtn" disabled
+                            style="opacity: 0.5; cursor: not-allowed;">Davom etish</button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Confirmation -->
+                <div class="enroll-step" id="step3">
+                    <div class="step-header">
+                        <button class="btn-back" id="backToStep2">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M13 15L8 10L13 5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                        <h3 class="step-title">Ma'lumotlarni tasdiqlang</h3>
+                    </div>
+
+                    <div class="booking-summary">
+                        <div class="summary-item">
+                            <span class="label">Kurs:</span>
+                            <span class="value" id="summaryCourse">Logoped kurs</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">O'qituvchi:</span>
+                            <span class="value" id="summaryTeacher">Nodira Karimova</span>
+                        </div>
+                        <div class="summary-item">
+                            <span class="label">Vaqt:</span>
+                            <span class="value" id="summaryTime">Bugun, 14:00</span>
+                        </div>
+                    </div>
+
+                    <form id="bookingForm" class="booking-form">
+                        <div class="form-group">
+                            <label class="form-label">Telefon raqamingiz</label>
+                            <input type="tel" class="form-input" id="bookingPhone" placeholder="+998 90 123 45 67"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Qo'shimcha izoh</label>
+                            <textarea class="form-textarea" id="bookingNote" rows="2" placeholder="Izoh..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">Yozilishni tasdiqlsh</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-overlay" id="profileOverlay"></div>
+        <div class="modal-content profile-modal-content" style="max-width: 600px;">
+            <button class="modal-close" id="profileClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title">Mening Profilim</h2>
+                <p id="profileUserEmail" class="modal-subtitle">foydalanuvchi@example.com</p>
+            </div>
+            <div class="profile-body" style="padding: 1.5rem 0; color: white;">
+                <div class="profile-section" style="margin-bottom: 2rem;">
+                    <h3 style="margin-bottom: 1rem; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 2v20M2 12h20M5 5l14 14M19 5L5 19" stroke-linecap="round" />
+                        </svg>
+                        Uyga vazifalar
+                    </h3>
+                    <div id="profileHomework"
+                        style="background: rgba(255, 255, 255, 0.05); padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); min-height: 100px; color: #e5e7eb;">
+                        Hozircha vazifalar yo'q.
+                    </div>
+                </div>
+                <div class="profile-section">
+                    <h3 style="margin-bottom: 1rem; color: white; display: flex; align-items: center; gap: 0.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="4" width="18" height="15" rx="2" />
+                            <path d="M3 9h18" />
+                        </svg>
+                        Darslar jadvali
+                    </h3>
+                    <div id="profileLessons" style="display: grid; gap: 1rem;">
+                        <!-- Lessons loaded by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">
+        <div class="toast-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="#10b981" />
+                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Muvaffaqiyatli!</div>
+            <div class="toast-message" id="toastMessage"></div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="logo">
+                        <img src="abnur_logo.jpg" alt="Abnur Logo"
+                            style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+                        <span class="logo-text" style="color: white;">Abnur</span>
+                    </div>
+                    <p class="footer-text">
+                        Professional logoped xizmatlari va rivojlantirish kurslari.
+                    </p>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Sahifalar</h4>
+                    <a href="#home" class="footer-link">Bosh sahifa</a>
+                    <a href="#courses" class="footer-link">Kurslar</a>
+                    <a href="#about" class="footer-link">Biz haqimizda</a>
+                    <a href="#contact" class="footer-link">Bog'lanish</a>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Xodimlar uchun</h4>
+                    <a href="admin.html" class="footer-link">Admin bo'limi</a>
+                    <a href="teacher.html" class="footer-link">O'qituvchi bo'limi</a>
+                </div>
+                <div class="footer-links">
+                    <h4 class="footer-title">Biz ijtimoiy tarmoqlarda</h4>
+                    <a href="https://t.me/abnur_kokand" target="_blank" class="footer-link">Telegram</a>
+                    <a href="https://www.instagram.com/reel/DQN2wlWiF4O/?igsh=MWtjMHc5eWRrNWRxbg==" target="_blank"
+                        class="footer-link">Instagram</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Abnur. Barcha huquqlar himoyalangan.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

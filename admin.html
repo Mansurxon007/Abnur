@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="uz">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Panel - Logoped Kurslari">
+    <title>Admin Panel - Logoped Kurslari</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin-styles.css">
+</head>
+
+<body class="admin-body">
+    <!-- Admin Login Screen -->
+    <div class="admin-login-container" id="adminLoginContainer">
+        <div class="admin-login-card">
+            <div class="admin-login-header">
+                <div class="admin-logo">
+                    <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="28" fill="url(#adminGradient1)" />
+                        <path d="M30 15L35 25H25L30 15Z" fill="white" />
+                        <rect x="25" y="25" width="10" height="15" fill="white" />
+                        <defs>
+                            <linearGradient id="adminGradient1" x1="0" y1="0" x2="60" y2="60">
+                                <stop offset="0%" stop-color="#667eea" />
+                                <stop offset="100%" stop-color="#764ba2" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <h1 class="admin-login-title">Admin Panel</h1>
+                <p class="admin-login-subtitle">O'qituvchilarni boshqarish tizimi</p>
+            </div>
+            <form class="admin-login-form" id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminUsername" class="form-label">Foydalanuvchi nomi</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="text" id="adminUsername" class="form-input" placeholder="admin" required
+                            autocomplete="username">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="adminPassword" class="form-label">Parol</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                stroke-width="1.5" />
+                        </svg>
+                        <input type="password" id="adminPassword" class="form-input" placeholder="••••••••" required
+                            autocomplete="current-password">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-full admin-login-btn">
+                    <span>Kirish</span>
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 3L14 10L7 17" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                </button>
+                <a href="index.html" class="admin-back-link">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                        <path d="M10 3L5 8L10 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                    </svg>
+                    Asosiy sahifaga qaytish
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-dashboard" id="adminDashboard" style="display: none;">
+        <!-- Sidebar -->
+        <aside class="admin-sidebar">
+            <div class="admin-sidebar-header">
+                <div class="admin-sidebar-logo">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <circle cx="20" cy="20" r="18" fill="url(#sidebarGradient)" />
+                        <path d="M15 20C15 20 17 17 20 17C23 17 25 20 25 20C25 20 23 23 20 23C17 23 15 20 15 20Z"
+                            fill="white" />
+                        <defs>
+                            <linearGradient id="sidebarGradient" x1="0" y1="0" x2="40" y2="40">
+                                <stop offset="0%" stop-color="#667eea" />
+                                <stop offset="100%" stop-color="#764ba2" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <span class="admin-sidebar-title">Abnur Admin</span>
+                </div>
+            </div>
+            <nav class="admin-sidebar-nav">
+                <a href="#" class="admin-nav-item active" data-section="teachers">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                            stroke-width="1.5" />
+                    </svg>
+                    <span>O'qituvchilar</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="free-lessons">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M15 10L10 7V13L15 10Z" fill="currentColor" />
+                        <rect x="3" y="4" width="14" height="12" rx="2" stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <span>Bepul darsliklar</span>
+                </a>
+                <a href="#" class="admin-nav-item" data-section="statistics">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <rect x="3" y="10" width="4" height="7" stroke="currentColor" stroke-width="1.5" />
+                        <rect x="8" y="6" width="4" height="11" stroke="currentColor" stroke-width="1.5" />
+                        <rect x="13" y="3" width="4" height="14" stroke="currentColor" stroke-width="1.5" />
+                    </svg>
+                    <span>Statistika</span>
+                </a>
+            </nav>
+            <div class="admin-sidebar-footer">
+                <button class="admin-logout-btn" id="adminLogoutBtn">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 17H4C3.44772 17 3 16.5523 3 16V4C3 3.44772 3.44772 3 4 3H7" stroke="currentColor"
+                            stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M13 13L17 10L13 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        <path d="M17 10H7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                    </svg>
+                    <span>Chiqish</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="admin-main">
+            <!-- Header -->
+            <header class="admin-header">
+                <button class="mobile-toggle" id="mobileToggle">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 12h18M3 6h18M3 18h18" />
+                    </svg>
+                </button>
+                <div class="admin-header-content">
+                    <div>
+                        <h1 class="admin-header-title" id="sectionTitle">O'qituvchilar</h1>
+                        <p class="admin-header-subtitle" id="sectionSubtitle">O'qituvchilarni boshqarish va qo'shish</p>
+                    </div>
+                    <div class="admin-header-actions">
+                        <button class="btn btn-primary" id="addTeacherBtn">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>Yangi o'qituvchi</span>
+                        </button>
+                        <button class="btn btn-primary" id="addLessonBtn" style="display: none;">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 5V15M5 10H15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <span>Dars qo'shish</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Teachers Section -->
+            <section class="admin-section" id="teachersSection">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2" />
+                                <path d="M4 20C4 16.13 7.58 13 12 13C16.42 13 20 16.13 20 20" stroke="white"
+                                    stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Jami o'qituvchilar</div>
+                            <div class="admin-stat-value" id="totalTeachers">0</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke="white"
+                                    stroke-width="2" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Faol o'qituvchilar</div>
+                            <div class="admin-stat-value" id="activeTeachers">0</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <rect x="3" y="6" width="18" height="15" rx="2" stroke="white" stroke-width="2" />
+                                <path d="M3 10H21" stroke="white" stroke-width="2" />
+                                <path d="M8 3V6M16 3V6" stroke="white" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Yangi qo'shilganlar</div>
+                            <div class="admin-stat-value" id="newTeachers">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Teachers Table -->
+                <div class="admin-table-card">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Barcha o'qituvchilar</h3>
+                        <div class="admin-search-wrapper">
+                            <svg class="admin-search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="9" cy="9" r="6" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M13 13L17 17" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <input type="text" class="admin-search-input" id="searchTeacher"
+                                placeholder="O'qituvchi qidirish...">
+                        </div>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Ism</th>
+                                    <th>Mutaxassislik</th>
+                                    <th>Telefon</th>
+                                    <th>Email</th>
+                                    <th>Tajriba</th>
+                                    <th>Holat</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="teachersTableBody">
+                                <!-- Teachers will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Free Lessons Section -->
+            <section class="admin-section" id="freeLessonsSection" style="display: none;">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #f6d365 0%, #fda085 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M10 9L15 12L10 15V9Z" fill="white" />
+                                <rect x="3" y="5" width="18" height="14" rx="2" stroke="white" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Jami darslar</div>
+                            <div class="admin-stat-value" id="totalFreeLessons">0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-table-card">
+                    <div class="admin-table-header">
+                        <h3 class="admin-table-title">Bepul video darsliklar</h3>
+                    </div>
+                    <div class="admin-table-wrapper">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Video Sarlavhasi</th>
+                                    <th>Video Linki</th>
+                                    <th>Sana</th>
+                                    <th>Amallar</th>
+                                </tr>
+                            </thead>
+                            <tbody id="freeLessonsTableBody">
+                                <!-- Lessons will be rendered here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Statistics Section -->
+            <section class="admin-section" id="statisticsSection" style="display: none;">
+                <div class="admin-stats-grid">
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M12 2L15 8L22 9L17 14L18 21L12 18L6 21L7 14L2 9L9 8L12 2Z" stroke="white"
+                                    stroke-width="2" stroke-linejoin="round" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Umumiy kurslar</div>
+                            <div class="admin-stat-value">5</div>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="admin-stat-icon"
+                            style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2" />
+                                <path d="M4 20C4 16.13 7.58 13 12 13C16.42 13 20 16.13 20 20" stroke="white"
+                                    stroke-width="2" />
+                            </svg>
+                        </div>
+                        <div class="admin-stat-content">
+                            <div class="admin-stat-label">Umumiy o'quvchilar</div>
+                            <div class="admin-stat-value">740+</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="admin-info-card">
+                    <h3>Statistika bo'limi</h3>
+                    <p>Bu yerda tizim statistikasi ko'rsatiladi. Keyingi yangilanishlarda qo'shiladi.</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Add/Edit Teacher Modal -->
+    <div class="modal" id="teacherModal">
+        <div class="modal-overlay" id="teacherModalOverlay"></div>
+        <div class="modal-content admin-modal-content">
+            <button class="modal-close" id="teacherModalClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="teacherModalTitle">Yangi o'qituvchi qo'shish</h2>
+                <p class="modal-subtitle">O'qituvchi ma'lumotlarini kiriting</p>
+            </div>
+            <form class="admin-form" id="teacherForm">
+                <input type="hidden" id="teacherId">
+                <div class="admin-form-grid">
+                    <div class="form-group">
+                        <label for="teacherName" class="form-label">To'liq ism *</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            <input type="text" id="teacherName" class="form-input" placeholder="Ism Familiya" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherSpecialty" class="form-label">Mutaxassislik *</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M10 2L12 7H17L13 10L14 15L10 12L6 15L7 10L3 7H8L10 2Z" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linejoin="round" />
+                            </svg>
+                            <input type="text" id="teacherSpecialty" class="form-input" placeholder="Nutq terapiyasi"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPhone" class="form-label">Telefon raqam *</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path
+                                    d="M7 4C7 4 8 3 9 4L10 5C11 6 11 6 10 7L9.5 7.5C9.5 7.5 10 9 11.5 10.5C13 12 14.5 12.5 14.5 12.5L15 12C16 11 16 11 17 12L18 13C19 14 18 15 18 15C18 15 16 17 14 17C10 17 5 12 5 8C5 6 7 4 7 4Z"
+                                    stroke="currentColor" stroke-width="1.5" />
+                            </svg>
+                            <input type="tel" id="teacherPhone" class="form-input" placeholder="+998 __ ___ __ __"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherEmail" class="form-label">Email</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <path d="M3 5L10 11L17 5" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                                <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            <input type="email" id="teacherEmail" class="form-input" placeholder="email@example.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherExperience" class="form-label">Tajriba (yil) *</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M10 6V10L13 12" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <input type="number" id="teacherExperience" class="form-input" placeholder="5" min="0"
+                                required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherStatus" class="form-label">Holat *</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M7 10L9 12L13 8" stroke="currentColor" stroke-width="1.5"
+                                    stroke-linecap="round" />
+                            </svg>
+                            <select id="teacherStatus" class="form-input" required>
+                                <option value="active">Faol</option>
+                                <option value="inactive">Faol emas</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="teacherBio" class="form-label">Qisqacha ma'lumot</label>
+                    <textarea id="teacherBio" class="form-textarea" placeholder="O'qituvchi haqida qisqacha..."
+                        rows="3"></textarea>
+                </div>
+
+                <!-- Login Credentials Section -->
+                <div class="form-divider">
+                    <span>Kirish Ma'lumotlari</span>
+                </div>
+
+                <div class="admin-form-grid">
+                    <div class="form-group">
+                        <label for="teacherUsername" class="form-label">Login (Avtomatik)</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <circle cx="10" cy="7" r="3" stroke="currentColor" stroke-width="1.5" />
+                                <path d="M4 17C4 13.69 6.69 11 10 11C13.31 11 16 13.69 16 17" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            <input type="text" id="teacherUsername" class="form-input" readonly
+                                placeholder="Avtomatik yaratiladi">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacherPassword" class="form-label">Parol</label>
+                        <div class="input-wrapper">
+                            <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                <rect x="4" y="8" width="12" height="9" rx="2" stroke="currentColor"
+                                    stroke-width="1.5" />
+                                <path d="M7 8V6C7 4.34 8.34 3 10 3C11.66 3 13 4.34 13 6V8" stroke="currentColor"
+                                    stroke-width="1.5" />
+                            </svg>
+                            <input type="text" id="teacherPassword" class="form-input" placeholder="Parol yarating"
+                                required>
+                            <button type="button" class="btn-icon-only" id="generatePasswordBtn"
+                                title="Parol generatsiya qilish"
+                                style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #667eea;">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 3V17M3 10H17" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="admin-form-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelTeacherBtn">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Credentials Modal -->
+    <div class="modal" id="credentialsModal">
+        <div class="modal-overlay" id="credentialsModalOverlay"></div>
+        <div class="modal-content admin-modal-content-small">
+            <div class="delete-modal-icon" style="background: #e0e7ff;">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="22" fill="#e0e7ff" />
+                    <path d="M16 24L22 30L32 18" stroke="#667eea" stroke-width="4" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <h3 class="delete-modal-title">O'qituvchi qo'shildi!</h3>
+            <p class="delete-modal-text">Quyidagi ma'lumotlarni o'qituvchiga taqdim eting:</p>
+
+            <div class="credentials-box"
+                style="background: #f3f4f6; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; text-align: left;">
+                <div style="margin-bottom: 1rem;">
+                    <span
+                        style="display: block; font-size: 0.8rem; color: #6b7280; margin-bottom: 0.25rem;">Login:</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong id="newTeacherUsername" style="font-size: 1.2rem; color: #111827;"></strong>
+                        <button class="btn-copy" onclick="copyToClipboard('newTeacherUsername')">Copy</button>
+                    </div>
+                </div>
+                <div>
+                    <span
+                        style="display: block; font-size: 0.8rem; color: #6b7280; margin-bottom: 0.25rem;">Parol:</span>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <strong id="newTeacherPassword" style="font-size: 1.2rem; color: #111827;"></strong>
+                        <button class="btn-copy" onclick="copyToClipboard('newTeacherPassword')">Copy</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="delete-modal-actions">
+                <button class="btn btn-primary btn-full" id="closeCredentialsBtn">Tushunarli</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal" id="deleteModal">
+        <div class="modal-overlay" id="deleteModalOverlay"></div>
+        <div class="modal-content admin-modal-content-small">
+            <div class="delete-modal-icon">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="22" fill="#fee2e2" />
+                    <path d="M24 16V24M24 32H24.02" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h3 class="delete-modal-title">O'qituvchini o'chirish</h3>
+            <p class="delete-modal-text">Haqiqatan ham bu o'qituvchini o'chirmoqchimisiz? Bu amalni bekor qilib
+                bo'lmaydi.</p>
+            <div class="delete-modal-actions">
+                <button class="btn btn-ghost" id="cancelDeleteBtn">Bekor qilish</button>
+                <button class="btn btn-danger" id="confirmDeleteBtn">O'chirish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Modal -->
+    <div class="modal" id="lessonModal">
+        <div class="modal-overlay" id="lessonModalOverlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="lessonModalClose">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M6 6L18 18M6 18L18 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="lessonModalTitle">Yangi dars qo'shish</h2>
+                <p class="modal-subtitle">Video darslik ma'lumotlarini kiriting</p>
+            </div>
+            <form id="lessonForm" class="admin-form">
+                <div class="form-group">
+                    <label class="form-label">Dars sarlavhasi</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-input" id="lessonTitle" required
+                            placeholder="Masalan: Nutqni rivojlantirish" style="padding-left: 1rem;">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Video URL (MP4 yoki YouTube link)</label>
+                    <div class="input-wrapper">
+                        <input type="text" class="form-input" id="lessonVideoUrl" required
+                            placeholder="video_v_2025.mp4 yoki link" style="padding-left: 1rem;">
+                    </div>
+                </div>
+                <div class="admin-form-actions">
+                    <button type="button" class="btn btn-ghost" id="cancelLessonBtn">Bekor qilish</button>
+                    <button type="submit" class="btn btn-primary">Saqlash</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Lesson Modal -->
+    <div class="modal" id="deleteLessonModal">
+        <div class="modal-overlay" id="deleteLessonModalOverlay"></div>
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <div class="delete-modal-icon">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                    <circle cx="24" cy="24" r="22" fill="#fee2e2" />
+                    <path d="M24 16V24M24 32H24.02" stroke="#ef4444" stroke-width="3" stroke-linecap="round" />
+                </svg>
+            </div>
+            <h3 class="delete-modal-title">Darsni o'chirish</h3>
+            <p class="delete-modal-text">Ushbu video darsni o'chirishni xohlaysizmi? Bu amalni ortga qaytarib bo'lmaydi.
+            </p>
+            <div class="delete-modal-actions">
+                <button class="btn btn-ghost" id="cancelDeleteLessonBtn">Bekor qilish</button>
+                <button class="btn btn-danger" id="confirmDeleteLessonBtn">O'chirish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="adminToast">
+        <div class="toast-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="#10b981" />
+                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round" />
+            </svg>
+        </div>
+        <div class="toast-content">
+            <div class="toast-title">Muvaffaqiyatli!</div>
+            <div class="toast-message" id="adminToastMessage"></div>
+        </div>
+    </div>
+
+    <script src="admin-script.js"></script>
+</body>
+
+</html>
