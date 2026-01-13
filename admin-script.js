@@ -233,36 +233,18 @@ function showAdminLogin() {
 // ===================================
 // Teacher Management
 // ===================================
-function loadTeachers() {
-    const savedTeachers = localStorage.getItem('logopedTeachers');
-    if (savedTeachers) {
-        teachers = JSON.parse(savedTeachers);
-    } else {
-        // Initialize with sample data if empty
-        if (!savedTeachers) {
-            const initialTeachers = [
-                {
-                    id: Date.now() + 1,
-                    name: 'Nodira Karimova',
-                    specialty: 'Nutq terapiyasi',
-                    phone: '+998 90 123 45 67',
-                    email: 'nodira@example.com',
-                    experience: 8,
-                    status: 'active',
-                    bio: 'Nutq terapiyasi bo\'yicha 8 yillik tajribaga ega mutaxassis',
-                    username: 'nodira.karimova',
-                    password: 'password123', // Default for demo
-                    createdAt: Date.now() - 86400000 * 30
-                }
-            ];
-            teachers = initialTeachers;
-            saveTeachers();
-        }
+// ===================================
+// Teacher Management
+// ===================================
+async function loadTeachers() {
+    try {
+        const response = await fetch('/api/teachers');
+        teachers = await response.json();
+        renderTeachers();
+    } catch (error) {
+        console.error('Error loading teachers:', error);
+        showAdminToast('O\'qituvchilarni yuklashda xatolik!', 'error');
     }
-}
-
-function saveTeachers() {
-    localStorage.setItem('logopedTeachers', JSON.stringify(teachers));
 }
 
 function renderTeachers(filteredTeachers = null) {
@@ -407,7 +389,7 @@ function closeTeacherModal() {
     currentEditingTeacherId = null;
 }
 
-function handleTeacherFormSubmit(e) {
+async function handleTeacherFormSubmit(e) {
     e.preventDefault();
 
     const teacherId = document.getElementById('teacherId').value;
@@ -421,40 +403,48 @@ function handleTeacherFormSubmit(e) {
         bio: document.getElementById('teacherBio').value
     };
 
-    if (teacherId) {
-        // Update existing teacher
-        const index = teachers.findIndex(t => t.id === parseInt(teacherId));
-        if (index !== -1) {
-            // Preserve existing credentials
-            teachers[index] = {
-                ...teachers[index],
-                ...teacherData
+    try {
+        if (teacherId) {
+            // Update existing teacher
+            const response = await fetch(`/api/teachers/${teacherId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(teacherData)
+            });
+
+            if (response.ok) {
+                showAdminToast('O\'qituvchi muvaffaqiyatli yangilandi!');
+                closeTeacherModal();
+            }
+        } else {
+            // Add new teacher
+            const username = document.getElementById('teacherUsername').value || generateUsername(teacherData.name);
+            const password = document.getElementById('teacherPassword').value;
+
+            const newTeacherData = {
+                ...teacherData,
+                username,
+                password
             };
-            showAdminToast('O\'qituvchi muvaffaqiyatli yangilandi!');
-            closeTeacherModal();
+
+            const response = await fetch('/api/teachers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newTeacherData)
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                showAdminToast('Yangi o\'qituvchi muvaffaqiyatli qo\'shildi!');
+                closeTeacherModal();
+                showCredentialsModal(username, password);
+            }
         }
-    } else {
-        // Add new teacher
-        const username = document.getElementById('teacherUsername').value || generateUsername(teacherData.name);
-        const password = document.getElementById('teacherPassword').value;
-
-        const newTeacher = {
-            id: Date.now(),
-            ...teacherData,
-            username,
-            password,
-            createdAt: Date.now()
-        };
-        teachers.push(newTeacher);
-        showAdminToast('Yangi o\'qituvchi muvaffaqiyatli qo\'shildi!');
-        closeTeacherModal();
-
-        // Show credentials modal
-        showCredentialsModal(username, password);
+        await loadTeachers();
+    } catch (error) {
+        console.error('Error saving teacher:', error);
+        showAdminToast('Saqlashda xatolik yuz berdi!', 'error');
     }
-
-    saveTeachers();
-    renderTeachers();
 }
 
 // Credentials Helpers
@@ -524,13 +514,22 @@ function closeDeleteModal() {
     currentDeleteTeacherId = null;
 }
 
-function handleDeleteTeacher() {
+async function handleDeleteTeacher() {
     if (currentDeleteTeacherId) {
-        teachers = teachers.filter(t => t.id !== currentDeleteTeacherId);
-        saveTeachers();
-        renderTeachers();
-        showAdminToast('O\'qituvchi muvaffaqiyatli o\'chirildi!');
-        closeDeleteModal();
+        try {
+            const response = await fetch(`/api/teachers/${currentDeleteTeacherId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                showAdminToast('O\'qituvchi muvaffaqiyatli o\'chirildi!');
+                closeDeleteModal();
+                await loadTeachers();
+            }
+        } catch (error) {
+            console.error('Error deleting teacher:', error);
+            showAdminToast('O\'chirishda xatolik yuz berdi!', 'error');
+        }
     }
 }
 
@@ -639,26 +638,14 @@ document.addEventListener('keydown', (e) => {
 // ===================================
 // Free Lessons Management
 // ===================================
-function loadFreeLessons() {
-    const savedLessons = localStorage.getItem('logopedFreeLessons');
-    if (savedLessons) {
-        freeLessons = JSON.parse(savedLessons);
-    } else {
-        // Sample data
-        freeLessons = [
-            {
-                id: Date.now(),
-                title: "Nutqni rivojlantirish uchun 5 ta mashq",
-                videoUrl: "video_2025-12-24_22-30-26.mp4",
-                createdAt: Date.now()
-            }
-        ];
-        saveFreeLessons();
+async function loadFreeLessons() {
+    try {
+        const response = await fetch('/api/lessons');
+        freeLessons = await response.json();
+        renderFreeLessons();
+    } catch (error) {
+        console.error('Error loading lessons:', error);
     }
-}
-
-function saveFreeLessons() {
-    localStorage.setItem('logopedFreeLessons', JSON.stringify(freeLessons));
 }
 
 function renderFreeLessons() {
@@ -730,35 +717,33 @@ function closeLessonModal() {
     currentEditingLessonId = null;
 }
 
-function handleLessonFormSubmit(e) {
+async function handleLessonFormSubmit(e) {
     e.preventDefault();
     const title = document.getElementById('lessonTitle').value;
     const videoUrl = document.getElementById('lessonVideoUrl').value;
 
-    if (currentEditingLessonId) {
-        const index = freeLessons.findIndex(l => l.id === currentEditingLessonId);
-        if (index !== -1) {
-            freeLessons[index] = {
-                ...freeLessons[index],
-                title,
-                videoUrl
-            };
-            showAdminToast('Dars muvaffaqiyatli yangilandi!');
+    try {
+        if (currentEditingLessonId) {
+            const response = await fetch(`/api/lessons/${currentEditingLessonId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, videoUrl })
+            });
+            if (response.ok) showAdminToast('Dars muvaffaqiyatli yangilandi!');
+        } else {
+            const response = await fetch('/api/lessons', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, videoUrl })
+            });
+            if (response.ok) showAdminToast('Yangi dars muvaffaqiyatli qo\'shildi!');
         }
-    } else {
-        const newLesson = {
-            id: Date.now(),
-            title,
-            videoUrl,
-            createdAt: Date.now()
-        };
-        freeLessons.push(newLesson);
-        showAdminToast('Yangi dars muvaffaqiyatli qo\'shildi!');
+        await loadFreeLessons();
+        closeLessonModal();
+    } catch (error) {
+        console.error('Error saving lesson:', error);
+        showAdminToast('Xatolik yuz berdi!', 'error');
     }
-
-    saveFreeLessons();
-    renderFreeLessons();
-    closeLessonModal();
 }
 
 window.editLesson = function (lessonId) {
@@ -777,13 +762,18 @@ function closeDeleteLessonModal() {
     currentDeleteLessonId = null;
 }
 
-function handleDeleteLesson() {
+async function handleDeleteLesson() {
     if (currentDeleteLessonId) {
-        freeLessons = freeLessons.filter(l => l.id !== currentDeleteLessonId);
-        saveFreeLessons();
-        renderFreeLessons();
-        showAdminToast('Dars muvaffaqiyatli o\'chirildi!');
-        closeDeleteLessonModal();
+        try {
+            await fetch(`/api/lessons/${currentDeleteLessonId}`, {
+                method: 'DELETE'
+            });
+            showAdminToast('Dars muvaffaqiyatli o\'chirildi!');
+            closeDeleteLessonModal();
+            await loadFreeLessons();
+        } catch (error) {
+            console.error('Error deleting lesson:', error);
+        }
     }
 }
 
