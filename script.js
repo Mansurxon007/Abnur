@@ -91,7 +91,7 @@ function setupEventListeners() {
     // Modal close buttons
     document.querySelectorAll('.modal-close').forEach(btn => {
         btn.addEventListener('click', () => {
-            const modal = btn.closest('.modal-overlay');
+            const modal = btn.closest('.modal');
             if (modal) {
                 modal.classList.remove('active');
                 document.body.style.overflow = '';
@@ -103,8 +103,11 @@ function setupEventListeners() {
     modalOverlays.forEach(overlay => {
         overlay.addEventListener('click', (e) => {
             if (e.target === overlay) {
-                overlay.classList.remove('active');
-                document.body.style.overflow = '';
+                const modal = overlay.closest('.modal');
+                if (modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             }
         });
     });
@@ -112,13 +115,13 @@ function setupEventListeners() {
     // Enrollment steps navigation
     const step1NextBtn = document.getElementById('step1NextBtn');
     const step2NextBtn = document.getElementById('step2NextBtn');
-    const step2PrevBtn = document.getElementById('step2PrevBtn');
-    const step3PrevBtn = document.getElementById('step3PrevBtn');
+    const backToStep1 = document.getElementById('backToStep1');
+    const backToStep2 = document.getElementById('backToStep2');
 
     if (step1NextBtn) step1NextBtn.addEventListener('click', () => showEnrollStep(2));
     if (step2NextBtn) step2NextBtn.addEventListener('click', () => showEnrollStep(3));
-    if (step2PrevBtn) step2PrevBtn.addEventListener('click', () => showEnrollStep(1));
-    if (step3PrevBtn) step3PrevBtn.addEventListener('click', () => showEnrollStep(2));
+    if (backToStep1) backToStep1.addEventListener('click', () => showEnrollStep(1));
+    if (backToStep2) backToStep2.addEventListener('click', () => showEnrollStep(2));
 }
 
 // ===================================
@@ -479,6 +482,13 @@ async function openProfileModal(scrollToHomework = false) {
 
         profileModal.classList.add('active');
         document.body.style.overflow = 'hidden';
+
+        // Add logout listener if button exists
+        const profileLogoutBtn = document.getElementById('profileLogoutBtn');
+        if (profileLogoutBtn) {
+            profileLogoutBtn.onclick = handleLogout;
+        }
+
         if (scrollToHomework) {
             setTimeout(() => profileHomework.scrollIntoView({ behavior: 'smooth', block: 'center' }), 300);
         }
