@@ -36,7 +36,8 @@ const userSchema = new mongoose.Schema({
     homework: { type: String, default: null },
     homeworkDate: { type: String, default: null },
     lessons: { type: Array, default: [] },
-    teacherId: { type: Number, default: null }
+    teacherId: { type: Number, default: null },
+    passedLessons: { type: Array, default: [] }
 });
 
 const teacherSchema = new mongoose.Schema({

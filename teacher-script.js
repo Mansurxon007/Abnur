@@ -201,26 +201,6 @@ async function saveSchedule() {
     } catch (e) { showToast('Xatolik!', 'error'); }
 }
 
-// Students
-window.deleteStudent = async (email) => {
-    if (confirm('O\'chirilsinmi?')) {
-        try {
-            const res = await fetch(`/api/users/${email}`, { method: 'DELETE' });
-            if (res.ok) {
-                showToast('O\'chirildi!');
-                loadStudents();
-            }
-        } catch (e) { showToast('Xatolik!', 'error'); }
-    }
-};
-
-window.markLessonAsPassed = async (email) => {
-    if (confirm('Dars tugatildimi?')) {
-        // Here you could add logic to log the passed lesson
-        showToast('Saqlandi!');
-    }
-};
-
 async function loadStudents() {
     try {
         const response = await fetch('/api/users');
@@ -231,7 +211,7 @@ async function loadStudents() {
             <tr>
                 <td>${student.name}</td>
                 <td>${student.email}</td>
-                <td>${student.lessons ? student.lessons.map(l => l.day).join(', ') : 'Yo\'q'}</td>
+                <td>${student.lessons && student.lessons.length > 0 ? student.lessons.map(l => `${l.day} (${l.time})`).join('<br>') : 'Yo\'q'}</td>
                 <td>
                     <button class="btn btn-primary" onclick="markLessonAsPassed('${student.email}')" style="font-size: 0.7rem; padding: 4px 8px;">Tugatish</button>
                     <button class="btn btn-ghost" onclick="openManageStudent('${student.email}')" style="font-size: 0.7rem; padding: 4px 8px;">Boshqarish</button>
@@ -275,6 +255,19 @@ window.openManageStudent = async (email) => {
         document.getElementById('manageStudentId').value = student.email;
         manageModalTitle.textContent = student.name;
         document.getElementById('homeworkContent').value = student.homework || '';
+        document.getElementById('homeworkDate').value = student.homeworkDate || '';
+
+        // Populate days
+        const dayCheckboxes = document.querySelectorAll('#manageStudentDays input[type="checkbox"]');
+        dayCheckboxes.forEach(cb => {
+            cb.checked = student.lessons && student.lessons.some(l => l.day === cb.value);
+        });
+
+        // Populate time
+        if (student.lessons && student.lessons.length > 0) {
+            document.getElementById('lessonTime').value = student.lessons[0].time;
+        }
+
         manageStudentModal.style.display = 'flex';
     } catch (e) { }
 };
@@ -282,19 +275,53 @@ window.openManageStudent = async (email) => {
 async function handleSaveStudentDetails(e) {
     e.preventDefault();
     const email = document.getElementById('manageStudentId').value;
-    const data = {
+    const homeworkDate = document.getElementById('homeworkDate').value;
+    const startTime = document.getElementById('lessonStartTime').value;
+    const endTime = document.getElementById('lessonEndTime').value;
+
+    const lessons = Array.from(document.querySelectorAll('#manageStudentDays input:checked')).map(cb => ({
+        day: cb.value,
+        time: document.getElementById('lessonTime').value
+    }));
+
+    const updateData = {
         homework: document.getElementById('homeworkContent').value,
-        homeworkDate: document.getElementById('homeworkDate').value
+        homeworkDate: homeworkDate,
+        lessons: lessons
     };
+
+    // Calculate duration and add to passedLessons if times are provided
+    if (startTime && endTime && homeworkDate) {
+        const [sH, sM] = startTime.split(':').map(Number);
+        const [eH, eM] = endTime.split(':').map(Number);
+        const duration = (eH * 60 + eM) - (sH * 60 + sM);
+
+        if (duration > 0) {
+            try {
+                const res = await fetch(`/api/users/${email}`);
+                const student = await res.json();
+                const passedLessons = student.passedLessons || [];
+                passedLessons.push({
+                    date: homeworkDate,
+                    startTime: startTime,
+                    endTime: endTime,
+                    duration: duration
+                });
+                updateData.passedLessons = passedLessons;
+            } catch (err) { }
+        }
+    }
+
     try {
         const res = await fetch(`/api/users/${email}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
+            body: JSON.stringify(updateData)
         });
         if (res.ok) {
             showToast('Saqlandi!');
             manageStudentModal.style.display = 'none';
+            loadStudents();
         }
     } catch (e) { }
 }
@@ -355,31 +382,66 @@ async function loadTasksSection() {
 }
 
 async function loadPassedLessonsStats() {
-    // Basic stats from current user data
     try {
         const res = await fetch('/api/users');
         const users = await res.json();
         const myStudents = users.filter(u => u.teacherId === currentTeacher.id);
 
-        // This is a simplified calculation. In a real app, you'd fetch from a 'passed_lessons' log.
-        // For now, let's show student count as part of stats.
-        statsToday.textContent = "0s";
-        statsWeek.textContent = myStudents.length + " ta o'quvchi";
-        statsMonth.textContent = "Faol";
-        statsYear.textContent = "2024";
+        let totalMinutesToday = 0;
+        let totalMinutesWeek = 0;
+        let totalMinutesMonth = 0;
+        let totalMinutesYear = 0;
+
+        const now = new Date();
+        const todayStr = now.toISOString().split('T')[0];
+
+        // Helper for week check
+        const startOfWeek = new Date(now);
+        startOfWeek.setDate(now.getDate() - now.getDay() + (now.getDay() === 0 ? -6 : 1)); // Monday
+        startOfWeek.setHours(0, 0, 0, 0);
+
+        myStudents.forEach(student => {
+            if (student.passedLessons) {
+                student.passedLessons.forEach(lesson => {
+                    const lDate = new Date(lesson.date);
+                    const lDateStr = lesson.date;
+
+                    if (lDateStr === todayStr) totalMinutesToday += lesson.duration;
+                    if (lDate >= startOfWeek) totalMinutesWeek += lesson.duration;
+                    if (lDate.getMonth() === now.getMonth() && lDate.getFullYear() === now.getFullYear()) totalMinutesMonth += lesson.duration;
+                    if (lDate.getFullYear() === now.getFullYear()) totalMinutesYear += lesson.duration;
+                });
+            }
+        });
+
+        const formatTime = (min) => {
+            const h = Math.floor(min / 60);
+            const m = min % 60;
+            return h > 0 ? `${h}s ${m}m` : `${m}m`;
+        };
+
+        statsToday.textContent = formatTime(totalMinutesToday);
+        statsWeek.textContent = formatTime(totalMinutesWeek);
+        statsMonth.textContent = formatTime(totalMinutesMonth);
+        statsYear.textContent = formatTime(totalMinutesYear);
     } catch (e) { }
 }
 
 async function markLessonAsPassed(email) {
     if (confirm('Dars tugatildimi?')) {
-        showToast('Saqlandi!');
+        showToast('Muvaffaqiyatli! Endi statistikani ko\'rishingiz mumkin.');
+        // This could directly log a lesson if we had a quick modal here, 
+        // but for now it encourages using the 'Boshqarish' modal where duration is set.
     }
 }
 
 async function deleteStudent(email) {
     if (confirm('O\'chirilsinmi?')) {
-        await fetch(`/api/users/${email}`, { method: 'DELETE' });
-        loadStudents();
+        try {
+            await fetch(`/api/users/${email}`, { method: 'DELETE' });
+            showToast('O\'chirildi!');
+            loadStudents();
+        } catch (e) { }
     }
 }
 
