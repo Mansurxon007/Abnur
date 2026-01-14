@@ -122,6 +122,24 @@ function setupEventListeners() {
     if (step2NextBtn) step2NextBtn.addEventListener('click', () => showEnrollStep(3));
     if (backToStep1) backToStep1.addEventListener('click', () => showEnrollStep(1));
     if (backToStep2) backToStep2.addEventListener('click', () => showEnrollStep(2));
+
+    // Mobile Menu Toggle
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navbar = document.getElementById('navbar');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    if (mobileMenuBtn && navbar) {
+        mobileMenuBtn.addEventListener('click', () => {
+            navbar.classList.toggle('active');
+        });
+    }
+
+    // Close mobile menu when link is clicked
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            if (navbar) navbar.classList.remove('active');
+        });
+    });
 }
 
 // ===================================
