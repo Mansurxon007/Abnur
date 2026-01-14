@@ -7,7 +7,9 @@ let currentTeacher = null;
 const teacherLoginContainer = document.getElementById('teacherLoginContainer');
 const teacherDashboard = document.getElementById('teacherDashboard');
 const teacherLoginForm = document.getElementById('teacherLoginForm');
-const navItems = document.querySelectorAll('.nav-item');
+const navItems = document.querySelectorAll('.admin-nav-item');
+const sidebar = document.querySelector('.admin-sidebar');
+const mobileToggle = document.getElementById('mobileToggle');
 const sections = {
     schedule: document.getElementById('scheduleSection'),
     appointments: document.getElementById('appointmentsSection'),
@@ -52,8 +54,20 @@ function setupTeacherEventListeners() {
     if (manageStudentForm) manageStudentForm.addEventListener('submit', handleSaveStudentDetails);
 
     navItems.forEach(item => {
-        item.addEventListener('click', () => switchSection(item.dataset.section));
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            switchSection(item.dataset.section);
+            if (window.innerWidth <= 768) {
+                sidebar.classList.remove('open');
+            }
+        });
     });
+
+    if (mobileToggle) {
+        mobileToggle.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+        });
+    }
 
     document.querySelectorAll('.modal-close, .btn-ghost-cancel').forEach(btn => {
         btn.onclick = () => {
@@ -62,7 +76,7 @@ function setupTeacherEventListeners() {
         };
     });
 
-    const addStudentBtn = document.getElementById('addStudentBtn');
+    const addStudentBtn = document.getElementById('openAddStudentModal');
     if (addStudentBtn) addStudentBtn.onclick = () => addStudentModal.style.display = 'flex';
 
     const saveScheduleBtn = document.getElementById('saveScheduleBtn');
