@@ -43,9 +43,12 @@ const manageStudentForm = document.getElementById('manageStudentForm');
 const manageModalTitle = document.getElementById('manageModalTitle');
 
 // Initial Load
-document.addEventListener('DOMContentLoaded', async () => {
-    await checkTeacherLoginStatus();
+document.addEventListener('DOMContentLoaded', () => {
+    // Setup event listeners immediately
     setupTeacherEventListeners();
+
+    // Then check login status
+    checkTeacherLoginStatus();
 });
 
 function setupTeacherEventListeners() {
@@ -70,10 +73,21 @@ function setupTeacherEventListeners() {
     }
 
     document.querySelectorAll('.modal-close, .btn-ghost-cancel').forEach(btn => {
-        btn.onclick = () => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
             if (addStudentModal) addStudentModal.style.display = 'none';
             if (manageStudentModal) manageStudentModal.style.display = 'none';
-        };
+        });
+    });
+
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 &&
+            sidebar && sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            mobileToggle && !mobileToggle.contains(e.target)) {
+            sidebar.classList.remove('open');
+        }
     });
 
     const addStudentBtn = document.getElementById('openAddStudentModal');
@@ -427,15 +441,13 @@ async function loadPassedLessonsStats() {
     } catch (e) { }
 }
 
-async function markLessonAsPassed(email) {
+window.markLessonAsPassed = async (email) => {
     if (confirm('Dars tugatildimi?')) {
         showToast('Muvaffaqiyatli! Endi statistikani ko\'rishingiz mumkin.');
-        // This could directly log a lesson if we had a quick modal here, 
-        // but for now it encourages using the 'Boshqarish' modal where duration is set.
     }
 }
 
-async function deleteStudent(email) {
+window.deleteStudent = async (email) => {
     if (confirm('O\'chirilsinmi?')) {
         try {
             await fetch(`/api/users/${email}`, { method: 'DELETE' });

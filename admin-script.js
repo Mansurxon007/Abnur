@@ -100,8 +100,8 @@ function initializeAdmin() {
         openTeacherModal();
     });
     if (teacherModalOverlay) teacherModalOverlay.addEventListener('click', closeTeacherModal);
-    if (teacherModalClose) teacherModalClose.addEventListener('click', closeTeacherModal);
-    if (cancelTeacherBtn) cancelTeacherBtn.addEventListener('click', closeTeacherModal);
+    if (teacherModalClose) teacherModalClose.addEventListener('click', (e) => { e.preventDefault(); closeTeacherModal(); });
+    if (cancelTeacherBtn) cancelTeacherBtn.addEventListener('click', (e) => { e.preventDefault(); closeTeacherModal(); });
     if (teacherForm) teacherForm.addEventListener('submit', handleTeacherFormSubmit);
 
     // Delete modal
@@ -156,8 +156,8 @@ function initializeAdmin() {
         });
     }
     if (lessonModalOverlay) lessonModalOverlay.addEventListener('click', closeLessonModal);
-    if (lessonModalClose) lessonModalClose.addEventListener('click', closeLessonModal);
-    if (cancelLessonBtn) cancelLessonBtn.addEventListener('click', closeLessonModal);
+    if (lessonModalClose) lessonModalClose.addEventListener('click', (e) => { e.preventDefault(); closeLessonModal(); });
+    if (cancelLessonBtn) cancelLessonBtn.addEventListener('click', (e) => { e.preventDefault(); closeLessonModal(); });
     if (lessonForm) lessonForm.addEventListener('submit', handleLessonFormSubmit);
 
     // Delete Lesson Modal
